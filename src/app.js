@@ -199,7 +199,7 @@ search.addWidgets([
               <a role="button" class="clickable-search-term">{{#helpers.highlight}}{ "attribute": "primary_artist_name" }{{/helpers.highlight}}</a>
             </div>
             <div class="mt-3">
-              <a href="#" aria-roledescription="button" class="readDirectionsButton text-muted" data-toggle="modal"><span>Cooking directions</span></a>
+              <a href="#" aria-roledescription="button" class="readDirectionsButton" data-toggle="modal"><span>Read Cooking Directions</span></a> 🚀
               <div class="modal fade" tabindex="-1" aria-labelledby="readDirectionsModalLabel-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                 <div class="modal-content">
