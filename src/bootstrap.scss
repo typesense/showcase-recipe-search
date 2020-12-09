@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Istok+Web:ital,wght@0,400;0,700;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+
+$primary: #A30015;
+$secondary: #F8EECE;
+$gray-100: #fcfbfb !default;
+$gray-200: #faf9f8 !default;
+$gray-300: #f8f7f5 !default;
+$gray-400: #f5f3f1 !default;
+$gray-500: #dddbd9 !default;
+$gray-600: #c4c2c1 !default;
+$gray-700: #acaaa9 !default;
+$gray-800: #7b7a79 !default;
+$gray-900: #494948 !default;
+$black:    #020202 !default;
+
+$text-muted: $gray-700;
+
+$component-active-bg: $secondary;
+
+$input-color: $primary;
+$custom-select-bg: $gray-300;
+
+$input-padding-x: 1.3rem;
+$input-padding-y: .8rem;
+
+$font-family-sans-serif: 'Istok Web', sans-serif;
+$font-size-base: 0.9rem;
+$input-font-size: 1.4rem;
+
+$input-font-weight: 500;
+$headings-font-weight: 900;
+$display1-weight: 500;
+$display2-weight: 500;
+$display3-weight: 500;
+$display4-weight: 500;
+
+$border-radius: 0px;
+
+$badge-font-size: 75%;
+$badge-font-weight: 300;
+$badge-pill-padding-x: 1.5em;
+$badge-padding-y: 0.75em;
+
+$enable-rounded: false;
+$enable-responsive-font-sizes: true;
+
+@import "~bootstrap/scss/bootstrap";
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6,
+.display-1, .display-2, .display-3, .display-4 {
+  letter-spacing: -0.05rem;
+}
+
+input {
+  letter-spacing: -0.05rem;
+}
+
+.font-serif {
+  font-family: 'Lora', serif;
+}
+
+.font-letter-spacing-loose {
+  letter-spacing: 0.01rem;
+}
+
+.border-light-2 {
+  border-color: $gray-500;
+}
+
+.bg-light-2 {
+  background-color: $gray-400;
+}
+
+.navbar-toggler-icon {
+  background-size: 75% 75%;
+}
