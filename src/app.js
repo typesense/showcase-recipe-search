@@ -92,11 +92,7 @@ let indexSize;
 })();
 
 function iconForUrl(url) {
-  if (url.includes('z')) { // TODO
-    return images['typesense']['svg'];
-  } else {
-    return images['generic_recipe_link_icon']['svg'];
-  }
+  return images['generic_recipe_link_icon']['svg'];
 }
 
 function queryWithoutStopWords(query) {
