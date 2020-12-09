@@ -241,10 +241,16 @@ search.addWidgets([
     },
     transformItems: items => {
       return items.map(item => {
+        let fixedLink = item.link
+        if (!item.link.startsWith('http')) {
+          fixedLink = `http://${item.link}`
+        }
+
         return {
           ...item,
           ingredient_names_display: item.ingredient_names.map(i => `${i.split('')[0].toUpperCase()}${i.substring(1).toLowerCase()}`).join(', '),
           icon: iconForUrl(item.link),
+          link: fixedLink
         };
       });
     },
