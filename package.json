@@ -8,6 +8,8 @@
     "indexer:ruby": "bundle exec ruby scripts/indexer/index.rb",
     "typesenseServer": "docker run -i -p 8108:8108 -v`pwd`/typesense-server-data/:/data typesense/typesense:0.17.0 --data-dir /data --api-key=xyz --listen-port 8108 --enable-cors",
     "build": "parcel build index.html --public-url https://recipe-search.typesense.org",
+    "deploy": "rm -rf build && yarn build && aws s3 cp --recursive ./dist s3://recipe-search.typesense.org/ --profile typesense && yarn clearCDNCache",
+    "clearCDNCache": "aws cloudfront create-invalidation --distribution-id E11CLJMGS6TH1U --paths \"/*\" --profile typesense",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix"
   },

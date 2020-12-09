@@ -13,7 +13,7 @@ search-engine. It is an open source alternative to Algolia and an easier-to-use 
 The recipe dataset is from <a href="https://github.com/Glorf/recipenlg" target="_blank">Glorf/recipenlg</a> 🙏!
 
 The app was built using the <a href="https://github.com/typesense/typesense-instantsearch-adapter" target="_blank">
-Typesense Adapter for InstantSearch.js</a> and is hosted on <a href="https://www.digitalocean.com/products/app-platform/" target="_blank">DigitalOcean's App Platform</a>.
+Typesense Adapter for InstantSearch.js</a> and is hosted on S3, with CloudFront for a CDN.
 
 The search backend is powered by a geo-distributed 3-node Typesense cluster running on <a href="https://cloud.typesense.org" target="_blank">Typesense Cloud</a>,
 with nodes in Oregon, Frankfurt and Mumbai.
@@ -28,7 +28,7 @@ with nodes in Oregon, Frankfurt and Mumbai.
 
 To run this project locally, install the dependencies and run the local server:
 
-```sh
+```shell
 yarn
 bundle # JSON parsing takes a while to run using JS when indexing, so we're using Ruby just for indexing
 
@@ -45,6 +45,11 @@ Open http://localhost:3000 to see the app.
 
 ## Deployment
 
-The app is hosted on [DigitalOcean App Platform](https://www.digitalocean.com/products/app-platform/).
+The app is hosted on S3, with Cloudfront for a CDN.
 
-Pushing to master will deploy the app to production.
+```shell
+yarn build
+yarn deploy
+
+aws s3
+```
