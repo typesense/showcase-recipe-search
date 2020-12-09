@@ -30,9 +30,14 @@ To run this project locally, install the dependencies and run the local server:
 
 ```sh
 yarn
+bundle # JSON parsing takes a while to run using JS when indexing, so we're using Ruby just for indexing
+
 yarn run typesenseServer
+
 ln -s .env.development .env
-BATCH_SIZE=1000 yarn run indexer
+
+BATCH_SIZE=1000 yarn run indexer:ruby
+
 yarn start
 ```
 
