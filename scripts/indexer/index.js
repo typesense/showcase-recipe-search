@@ -120,7 +120,9 @@ module.exports = (async () => {
   for await (const line of rl) {
     currentLine += 1;
 
-    const parsedRecord = PapaParse.parse(line);
+    const parsedRecord = PapaParse.parse(line, {
+      delimiter: ','
+    });
 
     if (currentLine === 1 && parsedRecord.data[0][0] === '') {
       continue; // Skip header
