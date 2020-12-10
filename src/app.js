@@ -219,6 +219,10 @@ search.addWidgets([
                         <li>{{ . }}</li>
                       {{/ingredients_with_measurements}}
                     </ul>
+                    <div class="mt-3 small">
+                        Note: If the measurements for the ingredients seem off, please double-check with
+                        the <a href="{{ link }}" target="_blank">source website</a>. Happy Cooking!
+                    </div>
                     <h5 class="mt-3">Cooking Directions</h6>
                     <ul>
                       {{#directions}}
