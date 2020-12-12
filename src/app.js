@@ -95,6 +95,19 @@ function iconForUrl(url) {
   return images['generic_recipe_link_icon']['svg'];
 }
 
+function domainFromUrl(url) {
+  if (url == null) {
+    return null;
+  }
+  const parsedUrl = new URL(url);
+  let result = parsedUrl.hostname;
+  if(result.startsWith('www.')) {
+    result = result.replace('www.', '')
+  }
+
+  return result;
+}
+
 function queryWithoutStopWords(query) {
   const words = query.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '').split(' ');
   return words
@@ -174,7 +187,7 @@ search.addWidgets([
         } else if (hasOneResult) {
           statsText = '1 result';
         } else {
-          statsText = `${nbHits.toLocaleString()} results`;
+          statsText = `✨ ${nbHits.toLocaleString()} results`;
         }
         return `${statsText} found ${
           indexSize ? ` - Searched ${indexSize.toLocaleString()} recipes` : ''
@@ -192,53 +205,58 @@ search.addWidgets([
     templates: {
       item: `
             <h6 class="text-primary font-weight-light font-letter-spacing-loose mb-0">
-              {{#helpers.highlight}}{ "attribute": "title" }{{/helpers.highlight}}
+              <a href="{{ link }}" target="_blank">
+                {{#helpers.highlight}}{ "attribute": "title" }{{/helpers.highlight}}
+              </a>
             </h6>
-            <div>
-              {{ ingredient_names_display }}
-              <a role="button" class="clickable-search-term">{{#helpers.highlight}}{ "attribute": "primary_artist_name" }{{/helpers.highlight}}</a>
+            <div class="text-muted">
+              from
+              <a class="text-muted" href="{{ link }}" target="_blank">{{ link_domain }}</a>
             </div>
-            <div class="mt-3">
-              <a href="#" aria-roledescription="button" class="readDirectionsButton" data-toggle="modal"><span>Read Cooking Directions</span></a> 🚀
+            <div class="mt-2 mb-3">
+              {{ ingredient_names_display }}
+            </div>
+            <div class="mt-auto">
+              <div class="text-right">
+                <a href="#" aria-roledescription="button" class="readDirectionsButton" data-toggle="modal"><span>Read Cooking Directions</span></a> 🚀
+              </div>
               <div class="modal fade" tabindex="-1" aria-labelledby="readDirectionsModalLabel-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title text-primary" id="readDirectionsModalLabel-1">
-                      {{ title }}<br>
-                      <small><a href="{{ link }}" target="_blank" class="small">Source</a></small>
-                    </h4>
-                    <button type="button" class="close btn btn-primary" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <h5 class="mb-1">Ingredients</h6>
-                    <div class="small">
-                      Note: If the measurements for the ingredients seem off, please double-check with
-                      the <a href="{{ link }}" target="_blank">source website</a>. Happy Cooking!
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title text-primary" id="readDirectionsModalLabel-1">
+                        {{ title }}<br>
+                        <small><a href="{{ link }}" target="_blank" class="small">Read on {{ link_domain }} »</a></small>
+                      </h4>
+                      <button type="button" class="close btn btn-primary" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
                     </div>
-                    <ul class="mt-2">
-                      {{#ingredients_with_measurements}}
-                        <li>{{ . }}</li>
-                      {{/ingredients_with_measurements}}
-                    </ul>
-                    <h5 class="mt-3">Cooking Directions</h6>
-                    <ul>
-                      {{#directions}}
-                        <li>{{ . }}</li>
-                      {{/directions}}
-                    </ul>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    <div class="modal-body">
+                      <h5 class="mb-1">Ingredients</h6>
+                      <ul class="mt-2">
+                        {{#ingredients_with_measurements}}
+                          <li>{{ . }}</li>
+                        {{/ingredients_with_measurements}}
+                      </ul>
+                      <div class="alert alert-warning small mt-2" role="alert">
+                        Note: If the measurements for the ingredients seem off, please double-check with
+                        the <a href="{{ link }}" target="_blank">source website</a>. Happy Cooking!
+                      </div>
+                      <h5 class="mt-4">Cooking Directions</h6>
+                      <ul>
+                        {{#directions}}
+                          <li>{{ . }}</li>
+                        {{/directions}}
+                      </ul>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            </div>
-            <div class="mt-auto text-right">
-              <a href="{{ link }}" target="_blank" class="ml-1"><img src="{{ icon }}" alt="{{ link }}" height="14"></a>
+
             </div>
         `,
       empty: 'No recipes found for <q>{{ query }}</q>. Try another search term.',
@@ -254,7 +272,8 @@ search.addWidgets([
           ...item,
           ingredient_names_display: item.ingredient_names.map(i => `${i.split('')[0].toUpperCase()}${i.substring(1).toLowerCase()}`).join(', '),
           icon: iconForUrl(item.link),
-          link: fixedLink
+          link: fixedLink,
+          link_domain: domainFromUrl(fixedLink)
         };
       });
     },
@@ -292,13 +311,11 @@ search.addWidgets([
     },
     transformItems: items => {
       const modifiedItems = items.map(item => {
-        console.log(item);
         return {
           ...item,
           label: '',
         };
       });
-      console.log(modifiedItems);
       return modifiedItems;
     },
   }),
@@ -322,7 +339,7 @@ search.on('render', function () {
 
   // Read directions button
   $('.readDirectionsButton').on('click', event => {
-    $(event.currentTarget).siblings().first().modal('show');
+    $(event.currentTarget).parent().siblings().first().modal('show');
   });
 });
 
