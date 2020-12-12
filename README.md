@@ -12,6 +12,8 @@ search-engine. It is an open source alternative to Algolia and an easier-to-use 
 
 The recipe dataset is from <a href="https://github.com/Glorf/recipenlg" target="_blank">Glorf/recipenlg</a> 🙏!
 
+The dataset is 2.2 GB on disk, with ~2.2 million rows. It took 8 minutes to index this dataset on a 3-node Typesense cluster with 4vCPUs per node and the index was 2.7GB in RAM.
+
 The app was built using the <a href="https://github.com/typesense/typesense-instantsearch-adapter" target="_blank">
 Typesense Adapter for InstantSearch.js</a> and is hosted on S3, with CloudFront for a CDN.
 
@@ -37,7 +39,7 @@ yarn run typesenseServer
 ln -s .env.development .env
 
 BATCH_SIZE=1000 yarn run indexer:transformDataset # This will output a JSONL file
-yarn run indexer:importToTypesense # This will import the JSONL file into Typsense
+yarn run indexer:importToTypesense # This will import the JSONL file into Typesense
 
 yarn start
 ```
