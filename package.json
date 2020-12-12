@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "parcel index.html --port 3000",
-    "indexer": "node scripts/indexer/index.js",
-    "indexer:ruby": "bundle exec ruby scripts/indexer/index.rb",
+    "indexer:transformDataset": "bundle exec ruby scripts/indexer/transform_dataset.rb",
+    "indexer:importToTypesense": "bundle exec ruby scripts/indexer/index.rb",
     "typesenseServer": "docker run -i -p 8108:8108 -v`pwd`/typesense-server-data/:/data typesense/typesense:0.17.0 --data-dir /data --api-key=xyz --listen-port 8108 --enable-cors",
     "build": "parcel build index.html --public-url https://recipe-search.typesense.org",
     "deploy": "rm -rf build && yarn build && aws s3 cp --recursive ./dist s3://recipe-search.typesense.org/ --profile typesense && yarn clearCDNCache",

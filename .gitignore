@@ -17,6 +17,7 @@
 .env.test.local
 .env.production.local
 .env.production
+.env.production.*
 .env
 
 npm-debug.log*
@@ -26,3 +27,4 @@ yarn-error.log*
 typesense-server-data
 /scripts/data/*.csv
 !/scripts/data/1K_dataset.csv
+/scripts/data/*.json

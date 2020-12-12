@@ -36,7 +36,8 @@ yarn run typesenseServer
 
 ln -s .env.development .env
 
-BATCH_SIZE=1000 yarn run indexer:ruby
+BATCH_SIZE=1000 yarn run indexer:transformDataset # This will output a JSONL file
+yarn run indexer:importToTypesense # This will import the JSONL file into Typsense
 
 yarn start
 ```
