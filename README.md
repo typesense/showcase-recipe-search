@@ -53,6 +53,4 @@ The app is hosted on S3, with Cloudfront for a CDN.
 ```shell
 yarn build
 yarn deploy
-
-aws s3
 ```
