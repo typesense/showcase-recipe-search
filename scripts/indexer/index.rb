@@ -32,7 +32,7 @@ schema = {
   'name' => COLLECTION_NAME,
   'fields' => [
     {
-      'name' => 'id',
+      'name' => 'recipe_id',
       'type' => 'int32'
     },
     {
@@ -45,7 +45,7 @@ schema = {
       'facet' => true
     }
   ],
-  'default_sorting_field' => 'id'
+  'default_sorting_field' => 'recipe_id'
 }
 
 puts "Populating new collection in Typesense #{COLLECTION_NAME}"
