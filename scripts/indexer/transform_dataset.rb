@@ -22,7 +22,7 @@ File.open(OUTPUT_FILE, 'w') do |output_file|
       link = "http://#{link}" if link.start_with?('www')
 
       {
-        recipe_id: row[nil].to_i, # No CSV header for id unfortunately
+        id: row[nil].to_i, # No CSV header for id unfortunately
         title: row['title'],
         ingredients_with_measurements: Oj.load(row['ingredients']),
         directions: Oj.load(row['directions']),
