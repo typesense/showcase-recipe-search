@@ -1,4 +1,4 @@
-# 🍳 Recipe Search, powered by Typesense
+#  🥘 Instant Recipe Search, powered by Typesense
 
 This is a demo that showcases some of [Typesense's](https://github.com/typesense/typesense) features using a 2 Million database of recipes.
 
@@ -53,6 +53,4 @@ The app is hosted on S3, with Cloudfront for a CDN.
 ```shell
 yarn build
 yarn deploy
-
-aws s3
 ```
