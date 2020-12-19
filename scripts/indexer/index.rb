@@ -32,6 +32,10 @@ schema = {
   'name' => COLLECTION_NAME,
   'fields' => [
     {
+      'name' => 'id',
+      'type' => 'int32'
+    },
+    {
       'name' => 'title',
       'type' => 'string'
     },
