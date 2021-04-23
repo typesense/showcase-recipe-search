@@ -2952,11 +2952,6 @@ hash.js@^1.0.0, hash.js@^1.0.3:
     inherits "^2.0.3"
     minimalistic-assert "^1.0.1"
 
-he@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
-  integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
-
 hex-color-regex@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
@@ -5765,18 +5760,25 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typesense-instantsearch-adapter@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/typesense-instantsearch-adapter/-/typesense-instantsearch-adapter-1.0.0.tgz#b5550f68a96805f405946d3306e8b6778a6a41f5"
-  integrity sha512-SkPDi/+XMnMXF0cCMpp+s9kDjLCsXRchVAvBCSJt9Dah7FxBdKSnS7WlGzbq3/BPDBrte0pjVtXbyK5jzmlMWw==
+typesense-instantsearch-adapter@^1.2.1-0:
+  version "1.2.1-0"
+  resolved "https://registry.yarnpkg.com/typesense-instantsearch-adapter/-/typesense-instantsearch-adapter-1.2.1-0.tgz#756da62141fbbc8c006638457d7e7ac0f36baa0b"
+  integrity sha512-SD6Xb8d15/dVcG91Gp7Sm5koN93PALP5k27/TEb1fi1ojKOyBGqBYiuSxTjK4vyhXyZ0Is/3yHAc2pw40+OmPA==
   dependencies:
-    he "^1.2.0"
-    typesense "^0.11.1"
+    typesense "^0.11.2"
 
 typesense@^0.11.1:
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/typesense/-/typesense-0.11.1.tgz#61ba772b743044e3caa19b292dad3aef1d686c0e"
   integrity sha512-vQswMl+OCpmIKpSxSGUPY3EYIGBFBUhRSAucmXdZcO7j4aw0VOHA0IkO490jr+arUc0lWh05LC+gT4PW4+kelg==
+  dependencies:
+    axios "^0.21.1"
+    loglevel "^1.7.1"
+
+typesense@^0.11.2:
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/typesense/-/typesense-0.11.2.tgz#eab88edc6767940413d116cc238c8e65c8c250e0"
+  integrity sha512-E3iAjzeCVAywzDocvPrfVsms2Ggp3/jcG5Dg8acyuglILnpfXTR2pRtwiJqhaPwtGmDnZgfnH8ZKS85st6dUSg==
   dependencies:
     axios "^0.21.1"
     loglevel "^1.7.1"

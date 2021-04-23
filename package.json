@@ -35,6 +35,6 @@
     "papaparse": "^5.3.0",
     "popper.js": "^1.16.1",
     "typesense": "^0.11.1",
-    "typesense-instantsearch-adapter": "^1.0.0"
+    "typesense-instantsearch-adapter": "^1.2.1-0"
   }
 }

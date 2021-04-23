@@ -284,7 +284,9 @@ search.addWidgets([
     searchable: true,
     searchablePlaceholder: 'Search ingredients',
     showMore: true,
-    showMoreLimit: 40,
+    limit: 50,
+    showMoreLimit: 100,
+    operator: 'and',
     cssClasses: {
       searchableInput: 'form-control form-control-sm mb-2 border-light-2',
       searchableSubmit: 'd-none',
