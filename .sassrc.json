@@ -1,0 +1,4 @@
+{
+  "quietDeps": true,
+  "silenceDeprecations": ["import"]
+}

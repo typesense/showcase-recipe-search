@@ -1,3 +1,5 @@
+@use 'bootstrap' as bs;
+
 html {
   scroll-behavior: smooth;
 }
@@ -17,14 +19,14 @@ footer.navbar {
   bottom: 0;
   margin-top: 20px;
 
-  background-color: $gray-300;
-  color: $navbar-light-color;
+  background-color: bs.$gray-300;
+  color: bs.$navbar-light-color;
 
   .navbar-text a {
-    color: $navbar-light-color;
+    color: bs.$navbar-light-color;
 
     &:hover {
-      color: $link-color;
+      color: bs.$link-color;
     }
   }
 }

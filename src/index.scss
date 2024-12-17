@@ -1,5 +1,7 @@
-@import 'bootstrap';
-@import 'app';
+@use "sass:color";
+
+@use 'app';
+@use 'bootstrap' as bs;
 
 .search-result-card {
   min-height: 100px;
@@ -23,7 +25,11 @@
 a.clickable-search-term {
   color: unset;
   text-decoration-line: underline;
-  text-decoration-color: darken($secondary, 40%);
+  text-decoration-color: color.adjust(
+    bs.$secondary,
+    $lightness: -40%,
+    $space: hsl
+  );
   cursor: pointer;
 }
 
@@ -41,7 +47,10 @@ a.clickable-search-term {
 
 mark {
   color: unset;
-  background-color: rgba(darken($secondary, 5%), .7);
+  background-color: rgba(
+    color.adjust(bs.$secondary, $lightness: -5%, $space: hsl),
+    0.7
+  );
   padding: 0 0.08em;
 }
 
@@ -52,11 +61,13 @@ mark {
 }
 
 @media (max-width: 1200px) {
-  h1, .h1 {
+  h1,
+  .h1 {
     font-size: calc(1.2rem + 1.2vw);
   }
 
-  h4, .h4 {
-    font-size: calc(1.0rem + 0.12vw);
+  h4,
+  .h4 {
+    font-size: calc(1rem + 0.12vw);
   }
 }

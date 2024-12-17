@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Istok+Web:ital,wght@0,400;0,700;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
 
-$primary: #B20D30;
-$secondary: #F3DFA2;
+$primary: #b20d30;
+$secondary: #f3dfa2;
 $gray-100: #fcfbfb !default;
 $gray-200: #faf9f8 !default;
 $gray-300: #f8f7f5 !default;
@@ -11,7 +11,7 @@ $gray-600: #c4c2c1 !default;
 $gray-700: #acaaa9 !default;
 $gray-800: #7b7a79 !default;
 $gray-900: #494948 !default;
-$black:    #231F20 !default;
+$black: #231f20 !default;
 
 $text-muted: $gray-700;
 
@@ -21,7 +21,7 @@ $input-color: $primary;
 $custom-select-bg: $gray-300;
 
 $input-padding-x: 1.3rem;
-$input-padding-y: .8rem;
+$input-padding-y: 0.8rem;
 
 $font-family-sans-serif: 'Istok Web', sans-serif;
 $font-size-base: 0.9rem;
@@ -44,11 +44,24 @@ $badge-padding-y: 0.75em;
 $enable-rounded: false;
 $enable-responsive-font-sizes: true;
 
-@import "~bootstrap/scss/bootstrap";
+@import '~bootstrap/scss/bootstrap';
 
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6,
-.display-1, .display-2, .display-3, .display-4 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+.display-1,
+.display-2,
+.display-3,
+.display-4 {
   letter-spacing: -0.05rem;
 }
 

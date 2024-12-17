@@ -13,13 +13,10 @@ import {
   stats,
   analytics,
   refinementList,
-  menu,
-  sortBy,
   currentRefinements,
 } from 'instantsearch.js/es/widgets';
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
-import {SearchClient as TypesenseSearchClient} from 'typesense'; // To get the total number of docs
-import images from '../images/*.*';
+import { SearchClient as TypesenseSearchClient } from 'typesense'; // To get the total number of docs
 import STOP_WORDS from './utils/stop_words.json';
 
 let TYPESENSE_SERVER_CONFIG = {
@@ -80,7 +77,7 @@ async function getIndexSize() {
   let results = await typesenseSearchClient
     .collections(INDEX_NAME)
     .documents()
-    .search({q: '*'});
+    .search({ q: '*' });
 
   return results['found'];
 }
@@ -91,18 +88,14 @@ let indexSize;
   indexSize = await getIndexSize();
 })();
 
-function iconForUrl(url) {
-  return images['generic_recipe_link_icon']['svg'];
-}
-
 function domainFromUrl(url) {
   if (url == null) {
     return null;
   }
   const parsedUrl = new URL(url);
   let result = parsedUrl.hostname;
-  if(result.startsWith('www.')) {
-    result = result.replace('www.', '')
+  if (result.startsWith('www.')) {
+    result = result.replace('www.', '');
   }
 
   return result;
@@ -180,7 +173,7 @@ search.addWidgets([
   stats({
     container: '#stats',
     templates: {
-      text: ({nbHits, hasNoResults, hasOneResult, processingTimeMS}) => {
+      text: ({ nbHits, hasNoResults, hasOneResult, processingTimeMS }) => {
         let statsText = '';
         if (hasNoResults) {
           statsText = 'No results';
@@ -259,21 +252,26 @@ search.addWidgets([
 
             </div>
         `,
-      empty: 'No recipes found for <q>{{ query }}</q>. Try another search term.',
+      empty:
+        'No recipes found for <q>{{ query }}</q>. Try another search term.',
     },
     transformItems: items => {
       return items.map(item => {
-        let fixedLink = item.link
+        let fixedLink = item.link;
         if (!item.link.startsWith('http')) {
-          fixedLink = `http://${item.link}`
+          fixedLink = `http://${item.link}`;
         }
 
         return {
           ...item,
-          ingredient_names_display: item.ingredient_names.map(i => `${i.split('')[0].toUpperCase()}${i.substring(1).toLowerCase()}`).join(', '),
-          icon: iconForUrl(item.link),
+          ingredient_names_display: item.ingredient_names
+            .map(
+              i =>
+                `${i.split('')[0].toUpperCase()}${i.substring(1).toLowerCase()}`
+            )
+            .join(', '),
           link: fixedLink,
-          link_domain: domainFromUrl(fixedLink)
+          link_domain: domainFromUrl(fixedLink),
         };
       });
     },
@@ -296,7 +294,7 @@ search.addWidgets([
       count: 'badge badge-light bg-light-2 ml-2',
       label: 'd-flex align-items-center text-capitalize',
       checkbox: 'mr-2',
-    }
+    },
   }),
   configure({
     hitsPerPage: 15,
@@ -332,22 +330,29 @@ function handleSearchTermClick(event) {
 
 // TODO: Update UI
 function handleFacetTermClick(event) {
-  search.helper.addDisjunctiveFacetRefinement('ingredient_names', event.currentTarget.textContent);
+  search.helper.addDisjunctiveFacetRefinement(
+    'ingredient_names',
+    event.currentTarget.textContent
+  );
 }
 
-search.on('render', function () {
+search.on('render', function() {
   // Make ingredient names clickable
   $('#hits .clickable-facet-term').on('click', handleFacetTermClick);
 
   // Read directions button
   $('.readDirectionsButton').on('click', event => {
-    $(event.currentTarget).parent().siblings().first().modal('show');
+    $(event.currentTarget)
+      .parent()
+      .siblings()
+      .first()
+      .modal('show');
   });
 });
 
 search.start();
 
-$(function () {
+$(function() {
   const $searchBox = $('#searchbox input[type=search]');
   // Set initial search term
   // if ($searchBox.val().trim() === '') {
