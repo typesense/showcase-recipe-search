@@ -11,10 +11,11 @@ import {
   infiniteHits,
   configure,
   stats,
-  analytics,
   refinementList,
   currentRefinements,
 } from 'instantsearch.js/es/widgets';
+import { history } from 'instantsearch.js/es/lib/routers';
+
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 import { SearchClient as TypesenseSearchClient } from 'typesense'; // To get the total number of docs
 import STOP_WORDS from './utils/stop_words.json';
@@ -104,14 +105,14 @@ function domainFromUrl(url) {
 function queryWithoutStopWords(query) {
   const words = query.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '').split(' ');
   return words
-    .map(word => {
+    .map((word) => {
       if (STOP_WORDS.includes(word.toLowerCase())) {
         return null;
       } else {
         return word;
       }
     })
-    .filter(w => w)
+    .filter((w) => w)
     .join(' ')
     .trim();
 }
@@ -120,9 +121,9 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: TYPESENSE_SERVER_CONFIG,
   // The following parameters are directly passed to Typesense's search API endpoint.
   //  So you can pass any parameters supported by the search endpoint below.
-  //  queryBy is required.
+  //  query_by is required.
   additionalSearchParameters: {
-    queryBy: 'title',
+    query_by: 'title',
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
@@ -130,16 +131,38 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 const search = instantsearch({
   searchClient,
   indexName: INDEX_NAME,
-  routing: true,
-  searchFunction(helper) {
-    if (helper.state.query === '') {
+  routing: {
+    router: history({ cleanUrlOnDispose: true }),
+  },
+  onStateChange({ uiState, setUiState }) {
+    if (uiState.r.query === '') {
       $('#results-section').addClass('d-none');
     } else {
       $('#results-section').removeClass('d-none');
-      helper.search();
+      setUiState(uiState);
     }
   },
+  future: {
+    preserveSharedStateOnUnmount: true,
+  },
 });
+
+const analyticsMiddleware = () => {
+  return {
+    onStateChange({ uiState }) {
+      window.ga(
+        'set',
+        'page',
+        (window.location.pathname + window.location.search).toLowerCase()
+      );
+      window.ga('send', 'pageView');
+    },
+    subscribe() {},
+    unsubscribe() {},
+  };
+};
+
+search.use(analyticsMiddleware);
 
 search.addWidgets([
   searchBox({
@@ -159,21 +182,13 @@ search.addWidgets([
     },
   }),
 
-  analytics({
-    pushFunction(formattedParameters, state, results) {
-      window.ga(
-        'set',
-        'page',
-        (window.location.pathname + window.location.search).toLowerCase()
-      );
-      window.ga('send', 'pageView');
-    },
-  }),
-
   stats({
     container: '#stats',
     templates: {
-      text: ({ nbHits, hasNoResults, hasOneResult, processingTimeMS }) => {
+      text: (
+        { nbHits, hasNoResults, hasOneResult, processingTimeMS },
+        { html }
+      ) => {
         let statsText = '';
         if (hasNoResults) {
           statsText = 'No results';
@@ -182,9 +197,9 @@ search.addWidgets([
         } else {
           statsText = `✨ ${nbHits.toLocaleString()} results`;
         }
-        return `${statsText} found ${
-          indexSize ? ` - Searched ${indexSize.toLocaleString()} recipes` : ''
-        } in ${processingTimeMS}ms.`;
+        return html`${statsText} found
+        ${indexSize ? ` - Searched ${indexSize.toLocaleString()} recipes` : ''}
+        ${' '}in ${processingTimeMS}ms.`;
       },
     },
   }),
@@ -196,18 +211,19 @@ search.addWidgets([
       loadMore: 'btn btn-primary mx-auto d-block mt-4',
     },
     templates: {
-      item: `
+      item(hit, { html, components }) {
+        return html`
             <h6 class="text-primary font-weight-light font-letter-spacing-loose mb-0">
-              <a href="{{ link }}" target="_blank">
-                {{#helpers.highlight}}{ "attribute": "title" }{{/helpers.highlight}}
+              <a href="${hit.link}" target="_blank">
+                ${components.Highlight({ hit, attribute: 'title' })}
               </a>
             </h6>
             <div class="text-muted">
               from
-              <a class="text-muted" href="{{ link }}" target="_blank">{{ link_domain }}</a>
+              <a class="text-muted" href="${hit.link}" target="_blank">${hit.link_domain}</a>
             </div>
             <div class="mt-2 mb-3">
-              {{ ingredient_names_display }}
+              ${hit.ingredient_names_display}
             </div>
             <div class="mt-auto">
               <div class="text-right">
@@ -218,8 +234,8 @@ search.addWidgets([
                   <div class="modal-content">
                     <div class="modal-header">
                       <h4 class="modal-title text-primary" id="readDirectionsModalLabel-1">
-                        {{ title }}<br>
-                        <small><a href="{{ link }}" target="_blank" class="small">Read on {{ link_domain }} »</a></small>
+                        ${hit.title}<br/>
+                        <small><a href="${hit.link}" target="_blank" class="small">Read on ${hit.link_domain} »</a></small>
                       </h4>
                       <button type="button" class="close btn btn-primary" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -228,19 +244,15 @@ search.addWidgets([
                     <div class="modal-body">
                       <h5 class="mb-1">Ingredients</h6>
                       <ul class="mt-2">
-                        {{#ingredients_with_measurements}}
-                          <li>{{ . }}</li>
-                        {{/ingredients_with_measurements}}
+                  ${hit.ingredients_with_measurements.map((item) => html`<li>${item}</li>`)}
                       </ul>
                       <div class="alert alert-warning small mt-2" role="alert">
                         Note: If the measurements for the ingredients seem off, please double-check with
-                        the <a href="{{ link }}" target="_blank">source website</a>. Happy Cooking!
+                        the <a href="${hit.link}" target="_blank">source website</a>. Happy Cooking!
                       </div>
                       <h5 class="mt-4">Cooking Directions</h6>
                       <ul>
-                        {{#directions}}
-                          <li>{{ . }}</li>
-                        {{/directions}}
+                  ${hit.directions.map((step) => html`<li>${step}</li>`)}
                       </ul>
                     </div>
                     <div class="modal-footer">
@@ -249,14 +261,14 @@ search.addWidgets([
                   </div>
                 </div>
               </div>
-
             </div>
-        `,
-      empty:
-        'No recipes found for <q>{{ query }}</q>. Try another search term.',
+        `;
+      },
+      empty: (hit, { html }) =>
+        html`No recipes found for <q>${hit.query}</q>. Try another search term.`,
     },
-    transformItems: items => {
-      return items.map(item => {
+    transformItems: (items) => {
+      return items.map((item) => {
         let fixedLink = item.link;
         if (!item.link.startsWith('http')) {
           fixedLink = `http://${item.link}`;
@@ -266,7 +278,7 @@ search.addWidgets([
           ...item,
           ingredient_names_display: item.ingredient_names
             .map(
-              i =>
+              (i) =>
                 `${i.split('')[0].toUpperCase()}${i.substring(1).toLowerCase()}`
             )
             .join(', '),
@@ -309,8 +321,8 @@ search.addWidgets([
       categoryLabel: 'text-capitalize',
       delete: 'btn btn-sm btn-link p-0 pl-2',
     },
-    transformItems: items => {
-      const modifiedItems = items.map(item => {
+    transformItems: (items) => {
+      const modifiedItems = items.map((item) => {
         return {
           ...item,
           label: '',
@@ -336,23 +348,19 @@ function handleFacetTermClick(event) {
   );
 }
 
-search.on('render', function() {
+search.on('render', function () {
   // Make ingredient names clickable
   $('#hits .clickable-facet-term').on('click', handleFacetTermClick);
 
   // Read directions button
-  $('.readDirectionsButton').on('click', event => {
-    $(event.currentTarget)
-      .parent()
-      .siblings()
-      .first()
-      .modal('show');
+  $('.readDirectionsButton').on('click', (event) => {
+    $(event.currentTarget).parent().siblings().first().modal('show');
   });
 });
 
 search.start();
 
-$(function() {
+$(function () {
   const $searchBox = $('#searchbox input[type=search]');
   // Set initial search term
   // if ($searchBox.val().trim() === '') {
@@ -365,7 +373,7 @@ $(function() {
   $('.clickable-facet-term').on('click', handleFacetTermClick);
 
   // Clear refinements, when searching
-  $searchBox.on('keydown', event => {
+  $searchBox.on('keydown', (event) => {
     search.helper.clearRefinements();
   });
 
