@@ -238,7 +238,7 @@ search.addWidgets([
                         <small><a href="${hit.link}" target="_blank" class="small">Read on ${hit.link_domain} »</a></small>
                       </h4>
                       <button type="button" class="close btn btn-primary" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">×</span>
                       </button>
                     </div>
                     <div class="modal-body">
@@ -362,11 +362,10 @@ search.start();
 
 $(function () {
   const $searchBox = $('#searchbox input[type=search]');
-  // Set initial search term
-  // if ($searchBox.val().trim() === '') {
-  //   $searchBox.val('recipe');
-  //   search.helper.setQuery($searchBox.val()).search();
-  // }
+  // Search on page refresh with the query restored from URL params
+  if ($searchBox.val().trim() !== '') {
+    search.helper.setQuery($searchBox.val()).search();
+  }
 
   // Handle example search terms
   $('.clickable-search-term').on('click', handleSearchTermClick);
