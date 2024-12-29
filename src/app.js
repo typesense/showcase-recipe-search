@@ -2,9 +2,6 @@ import jQuery from 'jquery';
 
 window.$ = jQuery; // workaround for https://github.com/parcel-bundler/parcel/issues/333
 
-import 'popper.js';
-import 'bootstrap';
-
 import instantsearch from 'instantsearch.js/es';
 import {
   searchBox,
@@ -15,7 +12,7 @@ import {
   currentRefinements,
 } from 'instantsearch.js/es/widgets';
 import { history } from 'instantsearch.js/es/lib/routers';
-
+import { Modal } from 'bootstrap';
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 import { SearchClient as TypesenseSearchClient } from 'typesense'; // To get the total number of docs
 import STOP_WORDS from './utils/stop_words.json';
@@ -172,7 +169,7 @@ search.addWidgets([
     placeholder: 'Type in a recipe title',
     autofocus: true,
     cssClasses: {
-      input: 'form-control',
+      input: 'form-control searchbox-input',
     },
     queryHook(query, search) {
       const modifiedQuery = queryWithoutStopWords(query);
@@ -213,21 +210,21 @@ search.addWidgets([
     templates: {
       item(hit, { html, components }) {
         return html`
-            <h6 class="text-primary font-weight-light font-letter-spacing-loose mb-0">
+            <h6 class="text-primary fw-light font-letter-spacing-loose mb-0">
               <a href="${hit.link}" target="_blank">
                 ${components.Highlight({ hit, attribute: 'title' })}
               </a>
             </h6>
             <div class="text-muted">
-              from
+              from${' '}
               <a class="text-muted" href="${hit.link}" target="_blank">${hit.link_domain}</a>
             </div>
             <div class="mt-2 mb-3">
               ${hit.ingredient_names_display}
             </div>
             <div class="mt-auto">
-              <div class="text-right">
-                <a href="#" aria-roledescription="button" class="readDirectionsButton" data-toggle="modal"><span>Read Cooking Directions</span></a> 🚀
+              <div class="text-end">
+                <a href="javascript:void(0)" aria-roledescription="button" class="readDirectionsButton" data-toggle="modal"><span>Read Cooking Directions</span></a> 🚀
               </div>
               <div class="modal fade" tabindex="-1" aria-labelledby="readDirectionsModalLabel-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -235,11 +232,9 @@ search.addWidgets([
                     <div class="modal-header">
                       <h4 class="modal-title text-primary" id="readDirectionsModalLabel-1">
                         ${hit.title}<br/>
-                        <small><a href="${hit.link}" target="_blank" class="small">Read on ${hit.link_domain} »</a></small>
+                        <small class="fw-light"><a href="${hit.link}" target="_blank" class="small">Read on ${hit.link_domain} »</a></small>
                       </h4>
-                      <button type="button" class="close btn btn-primary" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                      </button>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                       <h5 class="mb-1">Ingredients</h6>
@@ -256,7 +251,7 @@ search.addWidgets([
                       </ul>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                     </div>
                   </div>
                 </div>
@@ -303,9 +298,9 @@ search.addWidgets([
       searchableReset: 'd-none',
       showMore: 'btn btn-secondary btn-sm align-content-center',
       list: 'list-unstyled',
-      count: 'badge badge-light bg-light-2 ml-2',
-      label: 'd-flex align-items-center text-capitalize',
-      checkbox: 'mr-2',
+      count: 'badge bg-light text-bg-light ms-2',
+      label: 'd-flex align-items-center text-capitalize mb-2',
+      checkbox: 'me-2',
     },
   }),
   configure({
@@ -317,9 +312,9 @@ search.addWidgets([
       list: 'list-unstyled',
       label: 'd-none',
       item: 'h5',
-      category: 'badge badge-light bg-light-2 px-3 m-2',
+      category: 'badge text-bg-light px-3 m-2',
       categoryLabel: 'text-capitalize',
-      delete: 'btn btn-sm btn-link p-0 pl-2',
+      delete: 'btn btn-sm btn-link p-0 ps-2',
     },
     transformItems: (items) => {
       const modifiedItems = items.map((item) => {
@@ -354,7 +349,10 @@ search.on('render', function () {
 
   // Read directions button
   $('.readDirectionsButton').on('click', (event) => {
-    $(event.currentTarget).parent().siblings().first().modal('show');
+    const myModal = Modal.getOrCreateInstance(
+      $(event.currentTarget).parent().siblings().first()
+    );
+    myModal.show();
   });
 });
 

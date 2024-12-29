@@ -1,4 +1,4 @@
-@use "sass:color";
+@use 'sass:color';
 
 @use 'app';
 @use 'bootstrap' as bs;
@@ -70,4 +70,21 @@ mark {
   .h4 {
     font-size: calc(1rem + 0.12vw);
   }
+}
+
+.searchbox-input:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: white;
+}
+
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.text-muted {
+  color: bs.$text-muted;
 }

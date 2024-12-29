@@ -7,7 +7,7 @@
     "indexer:transformDataset": "bundle exec ruby scripts/indexer/transform_dataset.rb",
     "indexer:importToTypesense": "bundle exec ruby scripts/indexer/index.rb",
     "typesenseServer": "docker run -i -p 8108:8108 -v`pwd`/typesense-server-data/:/data typesense/typesense:0.17.0 --data-dir /data --api-key=xyz --listen-port 8108 --enable-cors",
-    "build": "parcel build index.html --public-url https://recipe-search.typesense.org",
+    "build": "parcel build index.html",
     "deploy": "rm -rf build && yarn build && aws s3 cp --recursive ./dist s3://recipe-search.typesense.org/ --profile typesense && yarn clearCDNCache",
     "clearCDNCache": "aws cloudfront create-invalidation --distribution-id E11CLJMGS6TH1U --paths \"/*\" --profile typesense",
     "lint": "eslint .",
@@ -32,14 +32,13 @@
   "dependencies": {
     "@babel/runtime": "^7.26.0",
     "@popperjs/core": "^2.5.3",
-    "bootstrap": "^4.6.2",
+    "bootstrap": "^5.3.3",
     "dotenv": "^16.4.7",
     "fast-json-stringify": "^6.0.0",
     "instantsearch.js": "^4.75.6",
     "jquery": "^3.5.1",
     "lodash": "^4.17.20",
     "papaparse": "^5.3.0",
-    "popper.js": "^1.16.1",
     "typesense": "^1.8.2",
     "typesense-instantsearch-adapter": "^2.8.0"
   }

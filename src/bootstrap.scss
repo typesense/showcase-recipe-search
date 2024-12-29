@@ -12,6 +12,7 @@ $gray-700: #acaaa9 !default;
 $gray-800: #7b7a79 !default;
 $gray-900: #494948 !default;
 $black: #231f20 !default;
+$light: $gray-400;
 
 $text-muted: $gray-700;
 
@@ -19,6 +20,7 @@ $component-active-bg: $secondary;
 
 $input-color: $primary;
 $custom-select-bg: $gray-300;
+$input-focus-box-shadow: 0 0 0 0.2rem #f3dfa240;
 
 $input-padding-x: 1.3rem;
 $input-padding-y: 0.8rem;
@@ -43,6 +45,13 @@ $badge-padding-y: 0.75em;
 
 $enable-rounded: false;
 $enable-responsive-font-sizes: true;
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+);
 
 @import '~bootstrap/scss/bootstrap';
 

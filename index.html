@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -48,9 +48,9 @@
     </script>
   </head>
 
-  <body>
+  <body class="container-fluid">
     <div class="container">
-      <div class="row mt-3 ">
+      <div class="row mt-3">
         <div class="col-md">
           <header>
             <div class="row">
@@ -58,16 +58,23 @@
                 <h1 class="text-md-center font-serif">
                   Instant Search 2 Million Recipes 🥘
                 </h1>
-                <h5 class="text-md-center mt-3 font-weight-light">
+                <h5 class="text-md-center mt-3 fw-light">
                   <div class="d-md-inline d-block mt-3">
-                    <span style="vertical-align: text-bottom;">powered by</span>
+                    <span
+                      style="vertical-align: text-bottom; font-weight: normal"
+                      >powered by</span
+                    >
                     <a href="https://typesense.org" target="_blank">
                       <img
                         src="images/typesense.svg"
                         height="30"
                         alt="Typesense"
                         class="mx-2"
-                        style="vertical-align: top; position: relative; top: -4px;"
+                        style="
+                          vertical-align: top;
+                          position: relative;
+                          top: -4px;
+                        "
                       />
                     </a>
                   </div>
@@ -90,7 +97,7 @@
     </div>
 
     <div class="row mt-2 mt-md-3 no-gutters">
-      <div class="col-md">
+      <div class="col-md p-0">
         <div
           id="searchbox-container"
           class="bg-secondary pt-3 pt-md-5 pb-2 pb-md-4 px-3 px-md-5"
@@ -139,14 +146,14 @@
             <button
               class="navbar-toggler text-primary border-light-2"
               type="button"
-              data-toggle="collapse"
-              data-target="#filters-section"
+              data-bs-toggle="collapse"
+              data-bs-target="#filters-section"
               aria-controls="filters-section"
               aria-expanded="false"
               aria-label="Toggle filters"
             >
               <span class="navbar-toggler-icon"></span
-              ><span class="ml-2" style="font-size: 15px;">Refine</span>
+              ><span class="ms-2" style="font-size: 15px">Refine</span>
             </button>
 
             <div
@@ -161,9 +168,7 @@
 
               <div class="row mt-2">
                 <div class="col-md">
-                  <h4 class="font-weight-light text-primary">
-                    Filter by Ingredients
-                  </h4>
+                  <h4 class="fw-light text-primary">Filter by Ingredients</h4>
                   <div id="ingredients-refinement-list"></div>
                 </div>
               </div>
@@ -204,9 +209,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title font-weight-normal" id="aboutLabel">
-              About
-            </h5>
+            <h5 class="modal-title fw-normal" id="aboutLabel">About</h5>
             <button
               type="button"
               class="close btn btn-primary"
