@@ -132,7 +132,7 @@ const search = instantsearch({
     router: history({ cleanUrlOnDispose: true }),
   },
   onStateChange({ uiState, setUiState }) {
-    if (uiState.r.query === '') {
+    if (uiState[INDEX_NAME].query === '') {
       $('#results-section').addClass('d-none');
     } else {
       $('#results-section').removeClass('d-none');
