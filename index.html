@@ -1,205 +1,282 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#000000" />
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="shortcut icon" href="./favicon.png" />
 
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="shortcut icon" href="./favicon.png">
+    <link rel="stylesheet" href="./src/index.scss" />
 
-  <link rel="stylesheet" href="./src/index.scss">
+    <title>Recipe Search with Typesense</title>
+    <meta name="description" content="Recipe Search with Typesense" />
+    <meta
+      name="keywords"
+      content="recipe, search, recipe search, search engine, typesense"
+    />
 
-  <title>Recipe Search with Typesense</title>
-  <meta name="description"
-        content="Recipe Search with Typesense">
-  <meta name="keywords" content="recipe, search, recipe search, search engine, typesense"/>
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://recipe-search.typesense.org" />
+    <meta property="og:title" content="Instant Search Recipes with Typesense" />
+    <meta
+      name="og:description"
+      content="Search through recipe from the RecipeNLG recipe database with Typesense"
+    />
+    <meta property="og:image" content="./images/opengraph_banner.png" />
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://recipe-search.typesense.org">
-  <meta property="og:title" content="Instant Search Recipes with Typesense">
-  <meta name="og:description" content="Search through recipe from the RecipeNLG recipe database with Typesense"/>
-  <meta property="og:image" content="./images/opengraph_banner.png">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-116415641-4"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
 
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116415641-4"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
 
-    function gtag() {
-      dataLayer.push(arguments);
-    }
+      gtag('js', new Date());
 
-    gtag('js', new Date());
+      gtag('config', 'UA-116415641-4');
+    </script>
+  </head>
 
-    gtag('config', 'UA-116415641-4');
-  </script>
-</head>
-
-<body>
-<div class="container">
-  <div class="row mt-3 ">
-    <div class="col-md">
-      <header>
-        <div class="row">
-          <div class="col-md">
-            <h1 class="text-md-center font-serif">
-              Instant Search 2 Million Recipes 🥘
-            </h1>
-            <h5 class="text-md-center mt-3 font-weight-light">
-              <div class="d-md-inline d-block mt-3">
-                <span style="vertical-align: text-bottom;">powered by</span>
-                <a href="https://typesense.org" target="_blank">
-                  <img src="images/typesense.svg" height="30" alt="Typesense" class="mx-2"
-                       style="vertical-align: top; position: relative; top: -4px;"/>
-                </a>
+  <body class="container-fluid">
+    <div class="container">
+      <div class="row mt-3">
+        <div class="col-md">
+          <header>
+            <div class="row">
+              <div class="col-md">
+                <h1 class="text-md-center font-serif">
+                  Instant Search 2 Million Recipes 🥘
+                </h1>
+                <h5 class="text-md-center mt-3 fw-light">
+                  <div class="d-md-inline d-block mt-3">
+                    <span
+                      style="vertical-align: text-bottom; font-weight: normal"
+                      >powered by</span
+                    >
+                    <a href="https://typesense.org" target="_blank">
+                      <img
+                        src="images/typesense.svg"
+                        height="30"
+                        alt="Typesense"
+                        class="mx-2"
+                        style="
+                          vertical-align: top;
+                          position: relative;
+                          top: -4px;
+                        "
+                      />
+                    </a>
+                  </div>
+                </h5>
+                <div class="text-md-center">
+                  <a
+                    class="github-button"
+                    href="https://github.com/typesense/showcase-recipe-search"
+                    data-color-scheme="no-preference: light; light: light; dark: dark;"
+                    data-size="normal"
+                    aria-label="View typesense/showcase-recipe-search on GitHub"
+                    >View on Github</a
+                  >
+                </div>
               </div>
-            </h5>
-            <div class="text-md-center">
-              <a class="github-button" href="https://github.com/typesense/showcase-recipe-search"
-                 data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="normal"
-                 aria-label="View typesense/showcase-recipe-search on GitHub">View on Github</a>
             </div>
-          </div>
-        </div>
-      </header>
-    </div>
-  </div>
-</div>
-
-<div class="row mt-2 mt-md-3 no-gutters">
-  <div class="col-md">
-    <div id="searchbox-container" class="bg-secondary pt-3 pt-md-5 pb-2 pb-md-4 px-3 px-md-5">
-      <div class="row justify-content-md-center">
-        <div class="col-md-8">
-          <div id="searchbox"></div>
-          <div class="mt-2">
-            Try:
-            <span id="example-search-terms">
-              <a role="button" class="clickable-search-term">Pizza</a>,
-              <a role="button" class="clickable-search-term">Pineapple</a>,
-              <a role="button" class="clickable-search-term">Kale</a>,
-              <a role="button" class="clickable-search-term">Oregano</a>,
-              <a role="button" class="clickable-search-term">Salad</a>,
-              <a role="button" class="clickable-search-term">Curry</a>,
-              <a role="button" class="clickable-search-term">Healthy</a>,
-              <a role="button" class="clickable-search-term">Keto</a>,
-              <a role="button" class="clickable-search-term">Low Carb</a>,
-              <a role="button" class="clickable-search-term">Steamed</a>,
-              <a role="button" class="clickable-search-term">Fried</a>
-            </span>
-          </div>
+          </header>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div id="results-section" class="container d-none">
-
-  <div class="row mt-3">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md">
-      <div class="row d-flex justify-content-end">
-        <div id="stats"
-             class="col-md text-right small order-first order-md-last d-flex align-items-center justify-content-end justify-content-md-start"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row mt-3">
-    <div class="col-md-3">
-      <nav class="navbar navbar-expand-md navbar-light p-0 pb-3">
-        <button class="navbar-toggler text-primary border-light-2" type="button" data-toggle="collapse"
-                data-target="#filters-section"
-                aria-controls="filters-section" aria-expanded="false" aria-label="Toggle filters">
-          <span class="navbar-toggler-icon"></span><span class="ml-2" style="font-size: 15px;">Refine</span>
-        </button>
-
-        <div class="collapse navbar-collapse d-md-block mt-3 mt-md-0" id="filters-section">
-          <div class="row mb-2">
-            <div class="col-md">
-              <div id="current-refinements"></div>
-            </div>
-          </div>
-
-          <div class="row mt-2">
-            <div class="col-md">
-              <h4 class="font-weight-light text-primary">Filter by Ingredients</h4>
-              <div id="ingredients-refinement-list"></div>
+    <div class="row mt-2 mt-md-3 no-gutters">
+      <div class="col-md p-0">
+        <div
+          id="searchbox-container"
+          class="bg-secondary pt-3 pt-md-5 pb-2 pb-md-4 px-3 px-md-5"
+        >
+          <div class="row justify-content-md-center">
+            <div class="col-md-8">
+              <div id="searchbox"></div>
+              <div class="mt-2">
+                Try:
+                <span id="example-search-terms">
+                  <a role="button" class="clickable-search-term">Pizza</a>,
+                  <a role="button" class="clickable-search-term">Pineapple</a>,
+                  <a role="button" class="clickable-search-term">Kale</a>,
+                  <a role="button" class="clickable-search-term">Oregano</a>,
+                  <a role="button" class="clickable-search-term">Salad</a>,
+                  <a role="button" class="clickable-search-term">Curry</a>,
+                  <a role="button" class="clickable-search-term">Healthy</a>,
+                  <a role="button" class="clickable-search-term">Keto</a>,
+                  <a role="button" class="clickable-search-term">Low Carb</a>,
+                  <a role="button" class="clickable-search-term">Steamed</a>,
+                  <a role="button" class="clickable-search-term">Fried</a>
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </nav>
-    </div>
-    <div class="col-md">
-      <div id="hits"></div>
-    </div>
-  </div>
-
-</div>
-
-<footer class="navbar fixed-bottom py-0">
-  <div class="container-fluid justify-content-center justify-content-md-end">
-    <span class="navbar-text">
-      <a href="#" aria-roledescription="button" data-toggle="modal" data-target="#aboutModal">
-        <span>about</span>
-      </a>
-    </span>
-  </div>
-</footer>
-
-<!-- About Modal -->
-<div id="aboutModal" class="modal fade" tabindex="-1" aria-labelledby="aboutLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title font-weight-normal" id="aboutLabel">
-          About
-        </h5>
-        <button type="button" class="close btn btn-primary" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>
-          This search experience is powered by <a href="https://typesense.org" target="_blank">Typesense</a> which is
-          a blazing-fast, <a href="https://github.com/typesense/typesense" target="_blank">open source</a> typo-tolerant
-          search-engine. It is an open source alternative to Algolia and an easier-to-use alternative to ElasticSearch.
-        </p>
-        <p>
-          The recipe dataset is from <a href="https://github.com/Glorf/recipenlg" target="_blank">RecipeNLG</a> which is
-          a Cooking Recipes Dataset for Semi-Structured Text Generation, but we're using it for search here.
-        </p>
-        <p>
-          The app was built using the <a href="https://github.com/typesense/typesense-instantsearch-adapter"
-                                         target="_blank">
-          Typesense Adapter for InstantSearch.js</a> and is hosted on S3, with Cloudfront for a CDN.
-        </p>
-        <p>
-          The search backend is powered by a geo-distributed 3-node Typesense cluster running on <a
-          href="https://cloud.typesense.org" target="_blank">Typesense Cloud</a>,
-          with nodes in Oregon, Frankfurt and Mumbai.
-        </p>
-        <p>
-          Here is the source-code that shows you how to build your own search experience like this one: <a
-          href="https://github.com/typesense/showcase-recipe-search" target="_blank">https://github.com/typesense/showcase-recipe-search</a>
-        </p>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
       </div>
     </div>
-  </div>
-</div>
 
+    <div id="results-section" class="container d-none">
+      <div class="row mt-3">
+        <div class="col-md-3"></div>
+        <div class="col-md">
+          <div class="row d-flex justify-content-end">
+            <div
+              id="stats"
+              class="col-md text-right small order-first order-md-last d-flex align-items-center justify-content-end justify-content-md-start"
+            ></div>
+          </div>
+        </div>
+      </div>
 
-<script src="./src/app.js"></script>
-<script async defer src="https://buttons.github.io/buttons.js"></script>
-</body>
+      <div class="row mt-3">
+        <div class="col-md-3">
+          <nav class="navbar navbar-expand-md navbar-light p-0 pb-3">
+            <button
+              class="navbar-toggler text-primary border-light-2"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#filters-section"
+              aria-controls="filters-section"
+              aria-expanded="false"
+              aria-label="Toggle filters"
+            >
+              <span class="navbar-toggler-icon"></span
+              ><span class="ms-2" style="font-size: 15px">Refine</span>
+            </button>
 
+            <div
+              class="collapse navbar-collapse d-md-block mt-3 mt-md-0"
+              id="filters-section"
+            >
+              <div class="row mb-2">
+                <div class="col-md">
+                  <div id="current-refinements"></div>
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col-md">
+                  <h4 class="fw-light text-primary">Filter by Ingredients</h4>
+                  <div id="ingredients-refinement-list"></div>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+        <div class="col-md">
+          <div id="hits"></div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="navbar fixed-bottom py-0">
+      <div
+        class="container-fluid justify-content-center justify-content-md-end"
+      >
+        <span class="navbar-text">
+          <a
+            href="#"
+            aria-roledescription="button"
+            data-bs-toggle="modal"
+            data-bs-target="#aboutModal"
+          >
+            <span>about</span>
+          </a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- About Modal -->
+    <div
+      id="aboutModal"
+      class="modal fade"
+      tabindex="-1"
+      aria-labelledby="aboutLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title fw-normal" id="aboutLabel">About</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              This search experience is powered by
+              <a href="https://typesense.org" target="_blank">Typesense</a>
+              which is a blazing-fast,
+              <a href="https://github.com/typesense/typesense" target="_blank"
+                >open source</a
+              >
+              typo-tolerant search-engine. It is an open source alternative to
+              Algolia and an easier-to-use alternative to ElasticSearch.
+            </p>
+            <p>
+              The recipe dataset is from
+              <a href="https://github.com/Glorf/recipenlg" target="_blank"
+                >RecipeNLG</a
+              >
+              which is a Cooking Recipes Dataset for Semi-Structured Text
+              Generation, but we're using it for search here.
+            </p>
+            <p>
+              The app was built using the
+              <a
+                href="https://github.com/typesense/typesense-instantsearch-adapter"
+                target="_blank"
+              >
+                Typesense Adapter for InstantSearch.js</a
+              >
+              and is hosted on S3, with Cloudfront for a CDN.
+            </p>
+            <p>
+              The search backend is powered by a geo-distributed 3-node
+              Typesense cluster running on
+              <a href="https://cloud.typesense.org" target="_blank"
+                >Typesense Cloud</a
+              >, with nodes in Oregon, Frankfurt and Mumbai.
+            </p>
+            <p>
+              Here is the source-code that shows you how to build your own
+              search experience like this one:
+              <a
+                href="https://github.com/typesense/showcase-recipe-search"
+                target="_blank"
+                >https://github.com/typesense/showcase-recipe-search</a
+              >
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./src/app.js"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+  </body>
 </html>

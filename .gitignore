@@ -28,3 +28,5 @@ typesense-server-data
 /scripts/data/*.csv
 !/scripts/data/1K_dataset.csv
 /scripts/data/*.json
+
+/.parcel-cache
