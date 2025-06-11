@@ -55,31 +55,7 @@ Open http://localhost:3000 to see the app.
 
 
 > if necessary to install Ruby, we use Ruby 2.7.2:
-```
-sudo apt update
-sudo apt install -y curl gnupg2 build-essential libssl-dev libreadline-dev zlib1g-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev git
 
-# Install rbenv and ruby-build
-curl -fsSL https://github.com/rbenv/rbenv-installer/raw/main/bin/rbenv-installer | bash
-
-# Add rbenv to bash so it loads every time
-echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-echo 'eval "$(rbenv init - bash)"' >> ~/.bashrc
-source ~/.bashrc
-
-# Install Ruby 2.7.2
-rbenv install 2.7.2
-
-# Check the version
-ruby -v
-
-# Install bundler
-gem install bundler -v 2.4.22
-
-
-# Proceed with 'bundle' command
-bundle
-```
 ## Deployment
 
 The app is hosted on S3, with Cloudfront for a CDN.
