@@ -33,8 +33,15 @@ To run this project locally, install the dependencies and run the local server:
 ```shell
 yarn
 bundle # JSON parsing takes a while to run using JS when indexing, so we're using Ruby just for indexing
+```
 
+In a separate shell, run typesense server:
+```bash
+# Bellow command needs docker installed
 yarn run typesenseServer
+```
+
+```bash
 
 ln -s .env.development .env
 
@@ -45,6 +52,9 @@ yarn start
 ```
 
 Open http://localhost:3000 to see the app.
+
+
+> if necessary to install Ruby, we use Ruby 2.7.2:
 
 ## Deployment
 
